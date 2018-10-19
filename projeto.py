@@ -1,3 +1,5 @@
+import copy
+
 # TAI content
 def c_peg ():
  return "O"
@@ -29,6 +31,11 @@ def move_initial (move):
  return move[0]
 def move_final (move):
  return move[1]
+
+#DeepCopy
+def make_board_copy(board):
+ return copy.deepcopy(board)
+
 
 
 def pos_cont(board, pos):
@@ -74,3 +81,63 @@ b1 = [["X","X","O","O","O","O","O","X","X"],
  ["X","X","O","O","O","O","O","X","X"]]
 
 print(board_moves(b1))
+
+
+
+
+def board_perform_move(board, move): #exemplo de move [(0,2), (0,0)]
+ """ FAZ UMA DEEP COPY PARA NAO ALTERAR DIRETAMENTE O BOARD """
+ aux = make_board_copy(board)
+ aux[pos_l(move_initial(move))][pos_c(move_initial(move))] = c_empty()
+ aux[pos_l(move_final(move))][pos_c(move_final(move))] = c_peg()
+ if pos_l(move_initial(move)) == pos_l(move_final(move)):
+  aux[pos_l(move_initial(move))][(pos_c(move_initial(move)) + pos_c(move_final(move)))//2] = c_empty()
+ else:
+  aux[(pos_l(move_initial(move)) + pos_l(move_final(move)))//2][pos_c(move_initial(move))] = c_empty()
+ return aux
+
+
+b1 = [["X","X","O","O","O","O","O","X","X"],
+ ["X","X","O","O","O","O","O","X","X"],
+ ["O","O","O","O","O","O","O","O","O"],
+ ["O","O","O","O","O","O","O","O","O"],
+ ["O","O","O","O","_","O","O","O","O"],
+ ["O","O","O","O","O","O","O","O","O"],
+ ["O","O","O","O","O","O","O","O","O"],
+ ["X","X","O","O","O","O","O","X","X"],
+ ["X","X","O","O","O","O","O","X","X"]]
+
+print(board_perform_move(b1, [(4, 2), (4, 4)]))
+
+
+"""
+class solitaire(Problem): 
+    Models a Solitaire problem as a satisfaction
+ problem. 
+       A solution cannot have more than 1 peg left 
+on the board. 
+    def __init__(self, board): 
+        ... 
+    def actions(self, state): 
+        ... 
+    def result(self, state, action): 
+        ... 
+    def goal_test(self, state): 
+        ... 
+    def path_cost(self, c, state1, action, state2):
+        ... 
+    def h(self, node): 
+        Needed for informed search.""" 
+
+
+"""
+class solitaire(Problem): 
+    Models a Solitaire problem as a satisfaction
+ problem. 
+       A solution cannot have more than 1 peg left 
+on the board. 
+    def __init__(self, board): 
+        ... 
+    def __lt__(self, <other sol_state>):
+    ...
+ """
