@@ -1,4 +1,7 @@
 import copy
+from search import *
+
+
 
 # TAI content
 def c_peg ():
@@ -107,27 +110,51 @@ b1 = [["X","X","O","O","O","O","O","X","X"],
  ["X","X","O","O","O","O","O","X","X"],
  ["X","X","O","O","O","O","O","X","X"]]
 
-print(board_perform_move(b1, [(4, 2), (4, 4)]))
+b2 = [["X","O","O","O","X"],["O","O","O","_","O"],["_","O","_","O","_"],["O","_","O","_","_"],["X","O","_","_","X"]]
 
 
-"""
+def get_peg_number(Board):
+    sum = 0
+    for x in Board:
+        sum += x.count(c_peg())
+    return sum
+
+class sol_state: 
+
+    def __init__(self, b): 
+        self.board = b
+        self.peg_nr = get_peg_number(b)
+
+        
+    def __lt__(self, other_sol_state):
+        return self.peg_nr < other_sol_state.peg_nr 
+
+
+ 
+
 class solitaire(Problem): 
-    Models a Solitaire problem as a satisfaction
+    """Models a Solitaire problem as a satisfaction
  problem. 
        A solution cannot have more than 1 peg left 
-on the board. 
+on the board. """ 
     def __init__(self, board): 
-        ... 
+        self.board = board
+
     def actions(self, state): 
-        ... 
+        return board_moves(state.board) 
+
     def result(self, state, action): 
-        ... 
-    def goal_test(self, state): 
-        ... 
+        self.board = board_perform_move(state.board, action)
+         
+    def goal_test(self, state):
+        return state.peg_nr == 1
+
     def path_cost(self, c, state1, action, state2):
-        ... 
+        pass 
     def h(self, node): 
-        Needed for informed search.""" 
+        
+        pass
+        """Needed for informed search.""" 
 
 
 """
