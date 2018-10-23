@@ -123,11 +123,12 @@ class sol_state:
 
     def __init__(self, b): 
         self.board = b
-        self.peg_nr = get_peg_number(b)
+        #self.peg_nr = get_peg_number(b)
 
         
     def __lt__(self, other_sol_state):
-        return self.peg_nr > other_sol_state.peg_nr 
+        #return self.peg_nr > other_sol_state.peg_nr
+        return get_peg_number(self.board) > get_peg_number(other_sol_state.board)
 
 
  
@@ -145,16 +146,19 @@ on the board. """
 
     def result(self, state, action): 
      new_board = board_perform_move(state.board, action)
+     self.initial = sol_state(new_board)
      return sol_state(new_board)
          
     def goal_test(self, state):
-        return state.peg_nr == 1
+        #return state.peg_nr == 1
+        return get_peg_number(state.board) == 1
 
     def path_cost(self, c, state1, action, state2):
         return c+1
        
     def h(self, node): 
-     return node.state.peg_nr
+     #return node.state.peg_nr -1
+     return get_peg_number(node.state.board) -1
         #pass
      """Needed for informed search.""" 
 
