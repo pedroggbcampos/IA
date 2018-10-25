@@ -15,7 +15,7 @@ def is_empty (e):
 def is_peg (e):
  return e == c_peg()
 def is_blocked (e):
- return e == c_blocked() 
+ return e == c_blocked()
 
 # TAI pos
 # Tuplo (l, c)
@@ -24,7 +24,7 @@ def make_pos (l, c):
 def pos_l (pos):
  return pos[0]
 def pos_c (pos):
- return pos[1] 
+ return pos[1]
 
 # TAI move
 # Lista [p_initial, p_final]
@@ -119,48 +119,73 @@ def get_peg_number(Board):
         sum += x.count(c_peg())
     return sum
 
-class sol_state: 
+def get_heuristic(Board):
+    sum = 0
+    counter = 0
+    for x in Board:
+        if counter == 0:
+            sum += x.count(c_peg())
+        elif counter == len(Board) - 1:
+            sum += x.count(c_peg())
+        else:
+            if is_peg(x[0]):
+                sum += 1
+            if is_peg(x[-1]):
+                sum += 1
+        sum += x.count(c_peg())
+        counter += 1
+    return sum
 
-    def __init__(self, b): 
+    
+##    nr_lines = board_lines(Board)
+##    nr_col = board_columns(Board)
+##        for c in range (1, nr_col - 1):
+##            if not is_peg(pos_cont(Board, make_pos(l + 1, c))) and not is_peg(pos_cont(Board, make_pos(l - 1, c))) and not is_peg(pos_cont(Board, make_pos(l, c + 1))) and not is_peg(pos_cont(Board, make_pos(l, c - 1))):
+##                and not is_peg(pos_cont(Board, make_pos(l +1 , c + 1))) and not is_peg(pos_cont(Board, make_pos(l + 1, c - 1))) and not is_peg(pos_cont(Board, make_pos(l - 1, c + 1))) and not is_peg(pos_cont(Board, make_pos(l - 1, c - 1))):
+##                sum += 1
+##    return sum
+
+
+class sol_state:
+
+    def __init__(self, b):
         self.board = b
         #self.peg_nr = get_peg_number(b)
 
-        
+
     def __lt__(self, other_sol_state):
         #return self.peg_nr > other_sol_state.peg_nr
-        return get_peg_number(self.board) > get_peg_number(other_sol_state.board)
+        return self.board > other_sol_state.board
 
 
- 
 
-class solitaire(Problem): 
+
+class solitaire(Problem):
     """Models a Solitaire problem as a satisfaction
- problem. 
-       A solution cannot have more than 1 peg left 
-on the board. """ 
-    def __init__(self, board): 
+ problem.
+       A solution cannot have more than 1 peg left
+on the board. """
+    def __init__(self, board):
      self.initial = sol_state(board)
 
-    def actions(self, state): 
-        return board_moves(state.board) 
+    def actions(self, state):
+        return board_moves(state.board)
 
-    def result(self, state, action): 
-     new_board = board_perform_move(state.board, action)
-     self.initial = sol_state(new_board)
-     return sol_state(new_board)
-         
+    def result(self, state, action):
+     return sol_state(board_perform_move(state.board, action))
+
     def goal_test(self, state):
         #return state.peg_nr == 1
         return get_peg_number(state.board) == 1
 
     def path_cost(self, c, state1, action, state2):
         return c+1
-       
-    def h(self, node): 
+
+    def h(self, node):
      #return node.state.peg_nr -1
-     return get_peg_number(node.state.board) -1
+     return get_heuristic(node.state.board)
         #pass
-     """Needed for informed search.""" 
+     """Needed for informed search."""
 
 
 
@@ -175,13 +200,13 @@ on the board. """
 
 
 """
-class solitaire(Problem): 
+class solitaire(Problem):
     Models a Solitaire problem as a satisfaction
- problem. 
-       A solution cannot have more than 1 peg left 
-on the board. 
-    def __init__(self, board): 
-        ... 
+ problem.
+       A solution cannot have more than 1 peg left
+on the board.
+    def __init__(self, board):
+        ...
     def __lt__(self, <other sol_state>):
     ...
  """
