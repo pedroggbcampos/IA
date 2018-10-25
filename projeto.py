@@ -120,22 +120,57 @@ def get_peg_number(Board):
     return sum
 
 def get_heuristic(Board):
-    sum = 0
-    counter = 0
-    for x in Board:
-        if counter == 0:
-            sum += x.count(c_peg())
-        elif counter == len(Board) - 1:
-            sum += x.count(c_peg())
-        else:
-            if is_peg(x[0]):
-                sum += 1
-            if is_peg(x[-1]):
-                sum += 1
-        sum += x.count(c_peg())
-        counter += 1
-    return sum
+	"""
+	sum = 0
+	counter = 0
+	if get_peg_number(Board) == 1:
+		return 0
+	for x in Board:
+	    if counter == 0:
+	        sum += x.count(c_peg())
+	    elif counter == len(Board) - 1:
+	        sum += x.count(c_peg())
+	    else:
+	        if is_peg(x[0]):
+	            sum += 1
+	        if is_peg(x[-1]):
+	            sum += 1
+	        for i in range (1, len(x) - 1):
+	        	if is_blocked(pos_cont(Board, make_pos(counter + 1, i))) or is_blocked(pos_cont(Board, make_pos(counter - 1, i))) or is_blocked(pos_cont(Board, make_pos(counter, i + 1))) or is_blocked(pos_cont(Board, make_pos(counter, i - 1))):
+	        		sum += 1
+	    sum += x.count(c_peg())
+	    counter += 1
+	    """
+	peg_positions = []
+	pegs = get_peg_number(Board)
+	if pegs == 1:
+		return 0
+	moves = board_moves(Board)
+	for move in moves:
+		if move[0] not in peg_positions:
+			peg_positions.append(move[0])
 
+
+	return 2*pegs - len(peg_positions)
+
+	"""
+	pegs = get_peg_number(Board)
+
+	if pegs == 1:
+		return 0
+
+	movable = []
+	allMoves = board_moves(Board)
+	for move in allMoves:
+		if move_initial(move) not in movable:
+			movable.append(move_initial(move))
+
+	
+	return pegs + (pegs - len(movable))
+	"""
+	
+	
+	
     
 ##    nr_lines = board_lines(Board)
 ##    nr_col = board_columns(Board)
@@ -150,12 +185,12 @@ class sol_state:
 
     def __init__(self, b):
         self.board = b
-        #self.peg_nr = get_peg_number(b)
+        self.peg_nr = get_peg_number(b)
 
 
     def __lt__(self, other_sol_state):
         #return self.peg_nr > other_sol_state.peg_nr
-        return self.board > other_sol_state.board
+        return self.board < other_sol_state.board
 
 
 
@@ -175,8 +210,8 @@ on the board. """
      return sol_state(board_perform_move(state.board, action))
 
     def goal_test(self, state):
-        #return state.peg_nr == 1
-        return get_peg_number(state.board) == 1
+        return state.peg_nr == 1
+        #return get_peg_number(state.board) == 1
 
     def path_cost(self, c, state1, action, state2):
         return c+1
@@ -188,6 +223,7 @@ on the board. """
      """Needed for informed search."""
 
 
+#print(sol_state([["_","O","O","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])>sol_state([["_","O","_","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]]))
 
 #print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
 
