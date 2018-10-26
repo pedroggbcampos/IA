@@ -129,10 +129,10 @@ def get_heuristic(Board):
  moves = board_moves(Board)
  for move in moves:
   if math.fabs(meio_linha - move[1][0]) + math.fabs(meio_coluna - move[1][1]) <= ((meio_linha + meio_coluna)//2) :
-   moves_para_centro.append(move[0]) 
- 
+   moves_para_centro.append(move[1])
+
  return pegs + (pegs - len(moves_para_centro))
- 
+
 
 
 class sol_state:
@@ -172,7 +172,7 @@ on the board. """
 
     def h(self, node):
      return get_heuristic(node.state.board)
-    
+
 
 
 #print(sol_state([["_","O","O","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])>sol_state([["_","O","_","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]]))
@@ -185,6 +185,3 @@ on the board. """
 #print(greedy_search(solitaire([["O","O","O","X","X"],["O","O","O","O","O"],["O","_","O","_","O"],["O","O","O","O","O"]])))
 
 #print(solitaire([["O","O","O","X","X"],["O","O","O","O","O"],["O","_","O","_","O"],["O","O","O","O","O"]]))
-
-
-
