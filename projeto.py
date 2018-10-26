@@ -1,3 +1,6 @@
+#Antonio Vieira 86387     Pedro Campos 86494   grupo 071
+
+
 import copy
 from search import *
 
@@ -72,23 +75,12 @@ def board_moves (board):
 				elif is_peg(pos_cont(board, make_pos(l, c))) and is_peg(pos_cont(board, make_pos(l + 1, c))) and is_empty(pos_cont(board, make_pos(l + 2, c))):
 					moves.append(make_move(make_pos(l, c), make_pos(l + 2, c)))
 	return moves
-"""
-b1 = [["X","X","O","O","O","O","O","X","X"],
- ["X","X","O","O","O","O","O","X","X"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","_","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["X","X","O","O","O","O","O","X","X"],
- ["X","X","O","O","O","O","O","X","X"]]
-"""
-#print(board_moves(b1))
 
 
 
 
-def board_perform_move(board, move): #exemplo de move [(0,2), (0,0)]
+
+def board_perform_move(board, move): 
  """ FAZ UMA DEEP COPY PARA NAO ALTERAR DIRETAMENTE O BOARD """
  aux = make_board_copy(board)
  aux[pos_l(move_initial(move))][pos_c(move_initial(move))] = c_empty()
@@ -99,19 +91,7 @@ def board_perform_move(board, move): #exemplo de move [(0,2), (0,0)]
   aux[(pos_l(move_initial(move)) + pos_l(move_final(move)))//2][pos_c(move_initial(move))] = c_empty()
  return aux
 
-"""
-b1 = [["X","X","O","O","O","O","O","X","X"],
- ["X","X","O","O","O","O","O","X","X"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","_","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["O","O","O","O","O","O","O","O","O"],
- ["X","X","O","O","O","O","O","X","X"],
- ["X","X","O","O","O","O","O","X","X"]]
 
-b2 = [["X","O","O","O","X"],["O","O","O","_","O"],["_","O","_","O","_"],["O","_","O","_","_"],["X","O","_","_","X"]]
-"""
 
 def get_peg_number(Board):
     sum = 0
@@ -143,7 +123,6 @@ class sol_state:
 
 
     def __lt__(self, other_sol_state):
-        #return self.peg_nr > other_sol_state.peg_nr
         return self.board < other_sol_state.board
 
 
@@ -165,7 +144,6 @@ on the board. """
 
     def goal_test(self, state):
         return state.peg_nr == 1
-        #return get_peg_number(state.board) == 1
 
     def path_cost(self, c, state1, action, state2):
         return c+1
@@ -173,15 +151,3 @@ on the board. """
     def h(self, node):
      return get_heuristic(node.state.board)
 
-
-
-#print(sol_state([["_","O","O","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])>sol_state([["_","O","_","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]]))
-
-#print(solitaire([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]).result(sol_state([["X","O","_","O","X"],["O","_","_","_","O"],["_","_","_","_","O"],["O","O","_","_","O"],["X","O","O","O","X"]]),[(3, 0), (3, 2)]).board)
-
-#print(sol_state([["_","O","O","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])>sol_state([["_","O","_","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]]))
-
-
-#print(greedy_search(solitaire([["O","O","O","X","X"],["O","O","O","O","O"],["O","_","O","_","O"],["O","O","O","O","O"]])))
-
-#print(solitaire([["O","O","O","X","X"],["O","O","O","O","O"],["O","_","O","_","O"],["O","O","O","O","O"]]))
