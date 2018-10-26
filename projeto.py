@@ -120,65 +120,19 @@ def get_peg_number(Board):
     return sum
 
 def get_heuristic(Board):
-	"""
-	sum = 0
-	counter = 0
-	if get_peg_number(Board) == 1:
-		return 0
-	for x in Board:
-	    if counter == 0:
-	        sum += x.count(c_peg())
-	    elif counter == len(Board) - 1:
-	        sum += x.count(c_peg())
-	    else:
-	        if is_peg(x[0]):
-	            sum += 1
-	        if is_peg(x[-1]):
-	            sum += 1
-	        for i in range (1, len(x) - 1):
-	        	if is_blocked(pos_cont(Board, make_pos(counter + 1, i))) or is_blocked(pos_cont(Board, make_pos(counter - 1, i))) or is_blocked(pos_cont(Board, make_pos(counter, i + 1))) or is_blocked(pos_cont(Board, make_pos(counter, i - 1))):
-	        		sum += 1
-	    sum += x.count(c_peg())
-	    counter += 1
-	    """
-	peg_positions = []
-	pegs = get_peg_number(Board)
-	if pegs == 1:
-		return 0
-	moves = board_moves(Board)
-	for move in moves:
-		if move[0] not in peg_positions:
-			peg_positions.append(move[0])
-
-
-	return 2*pegs - len(peg_positions)
-
-	"""
-	pegs = get_peg_number(Board)
-
-	if pegs == 1:
-		return 0
-
-	movable = []
-	allMoves = board_moves(Board)
-	for move in allMoves:
-		if move_initial(move) not in movable:
-			movable.append(move_initial(move))
-
-	
-	return pegs + (pegs - len(movable))
-	"""
-	
-	
-	
-    
-##    nr_lines = board_lines(Board)
-##    nr_col = board_columns(Board)
-##        for c in range (1, nr_col - 1):
-##            if not is_peg(pos_cont(Board, make_pos(l + 1, c))) and not is_peg(pos_cont(Board, make_pos(l - 1, c))) and not is_peg(pos_cont(Board, make_pos(l, c + 1))) and not is_peg(pos_cont(Board, make_pos(l, c - 1))):
-##                and not is_peg(pos_cont(Board, make_pos(l +1 , c + 1))) and not is_peg(pos_cont(Board, make_pos(l + 1, c - 1))) and not is_peg(pos_cont(Board, make_pos(l - 1, c + 1))) and not is_peg(pos_cont(Board, make_pos(l - 1, c - 1))):
-##                sum += 1
-##    return sum
+ pegs = get_peg_number(Board)
+ if pegs == 1:
+  return 0
+ moves_para_centro = []
+ meio_linha = board_lines(Board)//2
+ meio_coluna = board_columns(Board)//2
+ moves = board_moves(Board)
+ for move in moves:
+  if math.fabs(meio_linha - move[1][0]) + math.fabs(meio_coluna - move[1][1]) <= ((meio_linha + meio_coluna)//2) :
+   moves_para_centro.append(move[0]) 
+ 
+ return pegs + (pegs - len(moves_para_centro))
+ 
 
 
 class sol_state:
@@ -217,10 +171,8 @@ on the board. """
         return c+1
 
     def h(self, node):
-     #return node.state.peg_nr -1
      return get_heuristic(node.state.board)
-        #pass
-     """Needed for informed search."""
+    
 
 
 #print(sol_state([["_","O","O","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]])>sol_state([["_","O","_","O","_"],["O","_","O","O","O"],["_","O","_","O","_"],["O","_","O","_","_"],["_","O","_","_","_"]]))
@@ -235,14 +187,4 @@ on the board. """
 #print(solitaire([["O","O","O","X","X"],["O","O","O","O","O"],["O","_","O","_","O"],["O","O","O","O","O"]]))
 
 
-"""
-class solitaire(Problem):
-    Models a Solitaire problem as a satisfaction
- problem.
-       A solution cannot have more than 1 peg left
-on the board.
-    def __init__(self, board):
-        ...
-    def __lt__(self, <other sol_state>):
-    ...
- """
+
